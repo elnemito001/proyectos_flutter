@@ -1,25 +1,46 @@
 import 'package:flutter/material.dart';
+
 void main() {
- 
   runApp(const MainApp());
-  
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  bool _isDarkMode = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      theme: _isDarkMode
+          ? ThemeData.dark(useMaterial3: true)
+          : ThemeData.light(useMaterial3: true),
+      home: HomePage(
+        isDarkMode: _isDarkMode,
+        onThemeChanged: (bool isDark) {
+          setState(() => _isDarkMode = isDark);
+        },
+      ),
     );
   }
 }
 
 // ── Página principal ──────────────────────────────────────────────
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool isDarkMode;
+  final Function(bool) onThemeChanged;
+
+  const HomePage({
+    super.key,
+    required this.isDarkMode,
+    required this.onThemeChanged,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -94,6 +115,22 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.white, fontSize: 22),
               ),
             ),
+            // Botón de tema claro/oscuro
+            ListTile(
+              leading: Icon(
+                widget.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                color: Colors.grey[700],
+              ),
+              title: Text(widget.isDarkMode ? 'Modo Oscuro' : 'Modo Claro'),
+              trailing: Switch(
+                value: widget.isDarkMode,
+                onChanged: (bool value) {
+                  widget.onThemeChanged(value);
+                  Navigator.pop(context); // cierra el drawer
+                },
+              ),
+            ),
+            const Divider(),
             _drawerColorTile(context, Colors.blue, 'Azul'),
             _drawerColorTile(context, Colors.yellow, 'Amarillo'),
             _drawerColorTile(context, Colors.green, 'Verde'),
