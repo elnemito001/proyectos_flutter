@@ -4,7 +4,9 @@ class ScreenDetalle extends StatelessWidget {
   final String nombre;
   final Color color;
 
-  const ScreenDetalle({super.key, required this.color, required this.nombre});
+  const ScreenDetalle({Key? key, required this.color, required this.nombre})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

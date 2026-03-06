@@ -1,28 +1,22 @@
+import 'package:flutter_application_1/Screens/home_screen.dart';
+import 'package:flutter_application_1/core/theme/app_theme.dart';
+import 'package:flutter_application_1/core/theme/theme_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Screens/screen_detalle.dart';
-
+import 'package:provider/provider.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  Widget _buttonColor(BuildContext context, Color color, String colorName) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ScreenDetalle(color: color, nombre: colorName),
-          ),
-        );
-      },
-      style: ElevatedButton.styleFrom(backgroundColor: color),
-      child: Text(colorName, style: const TextStyle(color: Colors.white)),
-    );
-  }
-  
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
+    return MaterialApp(
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
   }
 }

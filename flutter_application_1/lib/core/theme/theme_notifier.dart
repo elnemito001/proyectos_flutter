@@ -9,4 +9,4 @@ class ThemeNotifier with ChangeNotifier {
     _isDarkMode = !_isDarkMode;
     notifyListeners();
   }
-} 
+}
